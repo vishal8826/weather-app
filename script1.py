@@ -16,7 +16,7 @@ def index():
         if not city:
             return render_template('wrong.html')
 
-    elif request.method=='GET':
+    else:
         city = 'Las Vegas'
     
     try:
