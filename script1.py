@@ -13,16 +13,25 @@ def index():
     if request.method == 'POST':
         city = request.form.get('city')
 
-    r = requests.get(url.format(city)).json()
+        if not city:
+            return render_template('wrong.html')
 
-    weather = {
-        'city' : city,
-        'temperature' : r['main']['temp'],
-        'description' : r['weather'][0]['description'],
-        'icon' : r['weather'][0]['icon'],
-    }
+    elif request.method=='GET':
+        city = 'Las Vegas'
+    
+    try:
+        r = requests.get(url.format(city)).json()
 
-    return render_template('weather.html', weather=weather)
+        weather = {
+            'city' : city,
+            'temperature' : r['main']['temp'],
+            'description' : r['weather'][0]['description'],
+            'icon' : r['weather'][0]['icon'],
+        }
+
+        return render_template('weather.html', weather=weather)
+    except:
+        return render_template('wrong.html')
 
 
 app.run(debug=True)
